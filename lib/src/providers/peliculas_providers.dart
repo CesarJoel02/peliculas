@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:peliculas1/src/models/actores_model.dart';
 import 'package:peliculas1/src/models/pelicula_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -10,6 +11,7 @@ class PeliculasProviders{
   String _url       ='api.themoviedb.org';
 
 int _popularesPage = 0;
+bool _cargando = false;
 
 List<Pelicula> _populares = new List();
 
@@ -17,7 +19,7 @@ final _popularesStreamControler = StreamController<List<Pelicula>>.broadcast();
 
 Function(List<Pelicula>) get popularesSink => _popularesStreamControler.sink.add;
 
-Stream <List<Pelicula>> get popularesStram => _popularesStreamControler.stream;
+Stream <List<Pelicula>> get popularesStream => _popularesStreamControler.stream;
 
 
 
@@ -48,7 +50,14 @@ void disposeStream(){
   }
 
   Future<List<Pelicula>>  getPopulares()async{
+
+    if (_cargando) return [];
+
+    _cargando = true;
+
     _popularesPage++;
+    print('Cargando siguientes...');
+
     final url = Uri.https(_url, '3/movie/popular',{
       'api_key'   : _apiKey,
       'language'  : _language,
@@ -59,7 +68,24 @@ void disposeStream(){
 
   _populares.addAll(resp);
   popularesSink(_populares);
+  _cargando = false;
 
   return resp;
   }
+
+  Future<List<Actor>> getCast( String peliId )async{
+
+    final url = Uri.https(_url, '/movie/$peliId/credits',{
+      'api_key'   : _apiKey,
+      'language'  : _language,
+    });
+
+    final resp = await http.get(url);
+    final decodedData = json.decode(resp.body);
+
+    final cast = new Cast.fromJsonList(decodedData['cast']);
+    return cast.actores;
+
+  }
+
 }

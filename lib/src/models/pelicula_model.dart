@@ -75,6 +75,17 @@ voteAverage       = json['vote_average'] /1 ;
 
     
   }
+
+
+  getBackgroundImg(){
+    if (posterPath == null){
+      return 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png';
+    }else{
+      return 'https://image.tmdb.org/t/p/w500/$backdropPath';
+    }
+
+    
+  }
 }
 
 
