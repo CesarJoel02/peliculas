@@ -27,30 +27,35 @@ final _pageController = new PageController(
     });
 
     return Container(
-      height: _screenSize.height * 0.2,
+      height: _screenSize.height * 0.25,
       child: PageView.builder(
         pageSnapping: false,
         controller: _pageController,
         itemCount: peliculas.length,
         itemBuilder: (context, i) =>_crearTarjeta(context, peliculas[i]),
-      
         // children : _tarjetas(),
       ),
     );
   }
 
   Widget _crearTarjeta (BuildContext context, Pelicula pelicula){
+
+    pelicula.uniqueId = '${pelicula.id}-poster';
+
     final tarjeta =  Container(
           margin: EdgeInsets.only(right:5.0),
           child: Column(
             children: <Widget>[
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                  child: FadeInImage(
-                  image: NetworkImage(pelicula.getPosterImg()),
-                  placeholder: NetworkImage('https://media0.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif'),
-                  fit: BoxFit.cover,
-                  height: 160.0,
+              Hero(
+                tag: pelicula.uniqueId,
+                    child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20.0),
+                      child: FadeInImage(
+                      image: NetworkImage(pelicula.getPosterImg()),
+                      placeholder: NetworkImage('https://media0.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif'),
+                      fit: BoxFit.cover,
+                      height: 160.0,
+                  ),
                 ),
               )
             ],

@@ -66,11 +66,14 @@ class PeliculaDetalle extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
         children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20.0),
-              child: Image(
-              image: NetworkImage(pelicula.getPosterImg()),
-              height: 150,
+          Hero(
+            tag: pelicula.uniqueId,
+              child: ClipRRect(
+              borderRadius: BorderRadius.circular(20.0),
+                child: Image(
+                image: NetworkImage(pelicula.getPosterImg()),
+                height: 150,
+              ),
             ),
           ),
           SizedBox(width: 20,),
@@ -135,6 +138,7 @@ class PeliculaDetalle extends StatelessWidget {
           viewportFraction: 0.3,
           initialPage: 1
         ),
+    
       ),
     );
   }
@@ -143,10 +147,18 @@ class PeliculaDetalle extends StatelessWidget {
     return Container(
       child: Column(
         children: <Widget>[
-          FadeInImage(
-            image: NetworkImage(actor.getFoto(),),
-            placeholder: NetworkImage('https://thumbs.gfycat.com/GenuineIllinformedEmu-size_restricted.gif'),
-            
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+              child: FadeInImage(
+              image: NetworkImage(actor.getFoto(),),
+              placeholder: NetworkImage('https://thumbs.gfycat.com/GenuineIllinformedEmu-size_restricted.gif'),
+              height: 150.0,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Text(
+            actor.name,
+            overflow: TextOverflow.ellipsis,
           )
         ],
       ),

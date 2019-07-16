@@ -5,8 +5,7 @@ class Cast{
     
     if (jsonList == null) return;
 
-    jsonList.forEach((item){
-
+    jsonList.forEach(  (item) {
       final actor = Actor.fromJsonMap(item);
       actores.add(actor);
 
